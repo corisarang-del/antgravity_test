@@ -16,7 +16,7 @@ export default function HistoryPage() {
           <p className="mt-1 text-sm font-semibold text-foreground/85">예측값과 실제 결과를 비교해 모델 신뢰도를 확인해.</p>
           <div className="mt-3">
             <Link
-              href="/"
+              href="/dashboard"
               className="inline-flex h-11 w-full cursor-pointer items-center justify-center rounded-md border-2 border-black bg-[hsl(var(--primary))] px-4 text-sm font-extrabold text-primary-foreground hover:-translate-y-0.5 sm:w-auto"
             >
               대시보드로 돌아가기
@@ -44,3 +44,4 @@ export default function HistoryPage() {
     </main>
   );
 }
+

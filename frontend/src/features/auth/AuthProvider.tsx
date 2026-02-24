@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { createContext, useContext, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 import { loginWithPassword, resendSignupEmail, signupWithPassword } from "@/lib/authApi";
 import {
@@ -21,12 +21,32 @@ type AuthContextValue = {
   signOut: () => Promise<void>;
 };
 
+type AuthState = {
+  session: AuthSession | null;
+  user: AuthSession["user"] | null;
+  isLoading: boolean;
+};
+
 const AuthContext = createContext<AuthContextValue | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [session, setSession] = useState<AuthSession | null>(() => getStoredAuthSession());
-  const [user, setUser] = useState<AuthSession["user"] | null>(() => getStoredAuthSession()?.user ?? null);
-  const isLoading = false;
+  const [authState, setAuthState] = useState<AuthState>({
+    session: null,
+    user: null,
+    isLoading: true,
+  });
+  const { session, user, isLoading } = authState;
+
+  useEffect(() => {
+    const storedSession = getStoredAuthSession();
+    // Hydration mismatch 방지를 위해 클라이언트 마운트 이후에만 세션을 복원한다.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setAuthState({
+      session: storedSession,
+      user: storedSession?.user ?? null,
+      isLoading: false,
+    });
+  }, []);
 
   const value = useMemo<AuthContextValue>(
     () => ({
@@ -44,8 +64,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             user: result.user,
           };
           setStoredAuthSession(nextSession);
-          setSession(nextSession);
-          setUser(nextSession.user);
+          setAuthState({
+            session: nextSession,
+            user: nextSession.user,
+            isLoading: false,
+          });
           return {};
         } catch (error) {
           return { errorMessage: error instanceof Error ? error.message : "로그인 실패" };
@@ -69,8 +92,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       },
       signOut: async () => {
         clearStoredAuthSession();
-        setSession(null);
-        setUser(null);
+        setAuthState({
+          session: null,
+          user: null,
+          isLoading: false,
+        });
       },
     }),
     [isLoading, session, user],

@@ -1,117 +1,86 @@
-﻿"use client";
+﻿import Link from "next/link";
 
-import Link from "next/link";
-import { useState } from "react";
-
-import { CacheStatusPanel } from "@/components/CacheStatusPanel";
-import { DataStatusBadge } from "@/components/DataStatusBadge";
-import { PredictionSummaryCard } from "@/components/PredictionSummaryCard";
-import { RealtimeEligibilityInfo } from "@/components/RealtimeEligibilityInfo";
-import { RefreshPolicyInfo } from "@/components/RefreshPolicyInfo";
-import { SymbolSelector } from "@/components/SymbolSelector";
-import { useAccessGuard } from "@/features/common/useAccessGuard";
-import { useAuth } from "@/features/auth/AuthProvider";
-import { DashboardStateView } from "@/features/dashboard/DashboardStateView";
-import { useDashboardData } from "@/features/dashboard/useDashboardData";
-
-export default function DashboardPage() {
-  const dashboardData = useDashboardData();
-  const { isLoggedIn, user, signOut } = useAuth();
-  const access = useAccessGuard({ isLoggedIn });
-  const [isSignOutLoading, setIsSignOutLoading] = useState(false);
-
-  const handleSignOut = async () => {
-    setIsSignOutLoading(true);
-    await signOut();
-    setIsSignOutLoading(false);
-  };
-
+export default function LandingPage() {
   return (
-    <main className="min-h-screen bg-background text-foreground">
-      <div className="mx-auto w-full max-w-6xl space-y-4 p-3 sm:space-y-5 sm:p-4 md:p-6">
-        <header className="rounded-2xl border-2 border-black bg-[linear-gradient(140deg,hsl(var(--brand-pink)),hsl(var(--brand-pink-soft)))] p-3 shadow-[var(--shadow-comic)] sm:p-4">
-          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <div>
-              <p className="text-xs font-black tracking-[0.14em] text-foreground">ANT GRAVITY</p>
-              <h1 className="mt-1 text-2xl font-black md:text-3xl">개미 투자자를 위한 AI 주가 예측</h1>
-              <p className="mt-1 text-sm font-semibold text-foreground/80">
-                신뢰를 주는 데이터 중심 UX 위에 친근한 가이드를 얹은 웹뷰형 대시보드
-              </p>
-            </div>
-            <div className="grid w-full grid-cols-2 gap-2 md:flex md:w-auto md:flex-wrap md:items-center">
-              <div className="col-span-2 md:col-span-1">
-                <DataStatusBadge status={dashboardData.status} />
-              </div>
-              <Link
-                href="/basis"
-                className="inline-flex h-11 items-center justify-center rounded-md border-2 border-black bg-card px-3 text-sm font-extrabold hover:-translate-y-0.5"
-              >
-                근거
-              </Link>
-              <Link
-                href="/history"
-                className="inline-flex h-11 items-center justify-center rounded-md border-2 border-black bg-card px-3 text-sm font-extrabold hover:-translate-y-0.5"
-              >
-                이력
-              </Link>
-              <Link
-                href="/watchlist"
-                className="col-span-2 inline-flex h-11 items-center justify-center rounded-md border-2 border-black bg-[hsl(var(--primary))] px-3 text-sm font-extrabold text-primary-foreground hover:-translate-y-0.5 md:col-span-1"
-              >
-                관심종목
-              </Link>
-            </div>
-          </div>
-          <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-end">
-            {isLoggedIn ? (
-              <>
-                <p className="text-xs font-semibold text-foreground/85">로그인: {user?.email}</p>
-                <button
-                  type="button"
-                  onClick={() => void handleSignOut()}
-                  disabled={isSignOutLoading}
-                  className="inline-flex h-11 items-center justify-center rounded-md border-2 border-black bg-card px-3 text-xs font-extrabold hover:-translate-y-0.5 disabled:opacity-60"
-                >
-                  {isSignOutLoading ? "로그아웃 중..." : "로그아웃"}
-                </button>
-              </>
-            ) : (
-              <Link
-                href="/login?redirect=/watchlist"
-                className="inline-flex h-11 items-center justify-center rounded-md border-2 border-black bg-card px-3 text-xs font-extrabold hover:-translate-y-0.5"
-              >
-                로그인
-              </Link>
-            )}
-          </div>
+    <main className="min-h-screen bg-[radial-gradient(circle_at_18%_12%,hsl(var(--accent)/0.18),transparent_36%),radial-gradient(circle_at_80%_78%,hsl(var(--secondary)/0.15),transparent_40%),hsl(var(--background))] text-foreground">
+      <div className="mx-auto w-full max-w-6xl p-3 sm:p-4 md:p-6">
+        <header className="flex items-center justify-between rounded-2xl border-2 border-black bg-card/90 px-4 py-3 shadow-[var(--shadow-comic)] backdrop-blur">
+          <p className="text-sm font-black tracking-wide">AI Stock Predictor</p>
+          <nav className="flex items-center gap-2">
+            <Link
+              href="/dashboard"
+              className="inline-flex h-10 items-center justify-center rounded-md border-2 border-black bg-[hsl(var(--primary))] px-4 text-xs font-extrabold text-primary-foreground hover:-translate-y-0.5"
+            >
+              시작하기
+            </Link>
+          </nav>
         </header>
 
-        <section className="rounded-2xl border-2 border-black bg-card p-3 shadow-[var(--shadow-comic)] sm:p-4">
-          <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
-            <SymbolSelector
-              symbols={dashboardData.symbols}
-              value={dashboardData.selectedTicker}
-              onChange={dashboardData.setSelectedTicker}
-            />
-            <div className="rounded-md border-2 border-black bg-[hsl(var(--secondary))] px-2 py-1 text-xs font-bold text-secondary-foreground sm:max-w-max">
-              조회 권한: {access.canViewDashboard ? "허용" : "차단"} / 개인화 기능: {" "}
-              {access.canManageWatchlist ? "허용" : "로그인 필요"}
-            </div>
+        <section className="px-2 py-20 text-center sm:py-24">
+          <p className="mx-auto inline-flex rounded-full border-2 border-black bg-[hsl(var(--secondary))] px-3 py-1 text-[11px] font-black tracking-[0.12em] text-secondary-foreground shadow-[var(--shadow-comic)]">
+            개미 투자자 맞춤 AI 분석
+          </p>
+          <h1 className="mt-6 text-4xl font-black leading-tight sm:text-6xl">
+            감(感) 대신 데이터로,
+            <span className="block text-[hsl(var(--secondary))]">개미도 납득되는 투자</span>
+          </h1>
+          <p className="mx-auto mt-5 max-w-3xl text-sm font-semibold text-foreground/80 sm:text-base">
+            어려운 용어 대신 핵심만 보여줘. 실시간 지표와 AI 예측을 묶어서 오늘 시장 흐름을 한눈에 파악하고,
+            왜 그런 신호가 나왔는지 근거까지 바로 확인할 수 있어.
+          </p>
+          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <Link
+              href="/dashboard"
+              className="inline-flex h-12 w-full items-center justify-center rounded-md border-2 border-black bg-[hsl(var(--primary))] px-5 text-sm font-extrabold text-primary-foreground shadow-[var(--shadow-comic)] hover:-translate-y-0.5 sm:w-auto"
+            >
+              내 종목 바로 분석하기
+            </Link>
+            <Link
+              href="/basis"
+              className="inline-flex h-12 w-full items-center justify-center rounded-md border-2 border-black bg-card px-5 text-sm font-extrabold hover:-translate-y-0.5 sm:w-auto"
+            >
+              왜 그런 예측인지 보기
+            </Link>
           </div>
+        </section>
 
-          <DashboardStateView errorType={dashboardData.errorType} onRetry={dashboardData.retry} />
+        <section className="grid gap-4 md:grid-cols-3">
+          <article className="rounded-2xl border-2 border-black bg-card p-5 shadow-[var(--shadow-comic)]">
+            <p className="text-sm font-black">헷갈리는 장세, 방향 먼저 확인</p>
+            <p className="mt-2 text-sm font-semibold text-muted-foreground">
+              단기 흐름을 오를지 내릴지와 함께 보여줘서, 매수/관망 판단을 더 빨리 내릴 수 있어.
+            </p>
+          </article>
+          <article className="rounded-2xl border-2 border-black bg-card p-5 shadow-[var(--shadow-comic)]">
+            <p className="text-sm font-black">근거 없는 추천은 하지 않아</p>
+            <p className="mt-2 text-sm font-semibold text-muted-foreground">
+              변동성, 거래량, 뉴스 흐름 같은 핵심 지표를 같이 보여줘서 내 판단 기준을 직접 세울 수 있어.
+            </p>
+          </article>
+          <article className="rounded-2xl border-2 border-black bg-card p-5 shadow-[var(--shadow-comic)]">
+            <p className="text-sm font-black">맞았는지 틀렸는지 기록으로 확인</p>
+            <p className="mt-2 text-sm font-semibold text-muted-foreground">
+              과거 예측과 실제 결과를 나란히 비교해보면서, 모델이 어떤 장에서 강한지 확인할 수 있어.
+            </p>
+          </article>
+        </section>
 
-          <div className="mt-4 grid gap-4 lg:grid-cols-3">
-            <PredictionSummaryCard summary={dashboardData.summary} />
-            <RefreshPolicyInfo tier={dashboardData.tier} />
-            <RealtimeEligibilityInfo reason={dashboardData.eligibilityReason} />
-          </div>
-
-          <div className="mt-4">
-            <CacheStatusPanel cacheInfo={dashboardData.cacheInfo} />
+        <section className="mt-8 rounded-2xl border-2 border-black bg-[linear-gradient(135deg,hsl(var(--card)),hsl(var(--accent)/0.35))] px-4 py-8 text-center shadow-[var(--shadow-comic)] sm:px-8">
+          <h2 className="text-2xl font-black sm:text-3xl">처음 시작하는 개미도 바로 쓸 수 있어</h2>
+          <p className="mx-auto mt-3 max-w-2xl text-sm font-semibold text-foreground/75">
+            가입 후 복잡한 설정 없이 관심 종목만 고르면, 오늘 신호와 근거를 바로 볼 수 있어.
+          </p>
+          <div className="mt-6">
+            <Link
+              href="/dashboard"
+              className="inline-flex h-12 items-center justify-center rounded-md border-2 border-black bg-[hsl(var(--primary))] px-6 text-sm font-extrabold text-primary-foreground hover:-translate-y-0.5"
+            >
+              무료로 시작하기
+            </Link>
           </div>
         </section>
       </div>
     </main>
   );
 }
+
