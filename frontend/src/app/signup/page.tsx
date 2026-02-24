@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 
 import { useAuth } from "@/features/auth/AuthProvider";
 
-export default function SignupPage() {
+function SignupPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirectTo = useMemo(() => searchParams.get("redirect") ?? "/watchlist", [searchParams]);
@@ -122,5 +122,21 @@ export default function SignupPage() {
         </section>
       </div>
     </main>
+  );
+}
+
+export default function SignupPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="min-h-screen bg-background p-3 text-foreground sm:p-4 md:p-6">
+          <div className="mx-auto max-w-md rounded-2xl border-2 border-black bg-card p-4 shadow-[var(--shadow-comic)]">
+            <p className="text-sm font-semibold">페이지 준비 중...</p>
+          </div>
+        </main>
+      }
+    >
+      <SignupPageContent />
+    </Suspense>
   );
 }
