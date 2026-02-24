@@ -14,18 +14,27 @@ const fallbackSymbols: SymbolItem[] = [
   { ticker: "TSLA", name: "Tesla" },
   { ticker: "NVDA", name: "NVIDIA" },
   { ticker: "AAPL", name: "Apple" },
+  { ticker: "005930.KS", name: "삼성전자" },
+  { ticker: "000660.KS", name: "하이닉스" },
+  { ticker: "005380.KS", name: "현대차" },
 ];
 
 const fallbackSummaryMap: Record<string, PredictionSummary> = {
   TSLA: { direction: "상승", confidence: 72, horizonLabel: "D+1 ~ D+5", updatedAt: "12:40" },
   NVDA: { direction: "중립", confidence: 65, horizonLabel: "D+1 ~ D+5", updatedAt: "12:39" },
   AAPL: { direction: "하락", confidence: 61, horizonLabel: "D+1 ~ D+5", updatedAt: "12:41" },
+  "005930.KS": { direction: "상승", confidence: 67, horizonLabel: "D+1 ~ D+5", updatedAt: "12:38" },
+  "000660.KS": { direction: "상승", confidence: 69, horizonLabel: "D+1 ~ D+5", updatedAt: "12:38" },
+  "005380.KS": { direction: "중립", confidence: 62, horizonLabel: "D+1 ~ D+5", updatedAt: "12:38" },
 };
 
 const fallbackCacheMap: Record<string, CacheInfo> = {
   TSLA: { enabled: true, ttlMinutesLeft: 12, lastSyncAt: "12:40" },
   NVDA: { enabled: true, ttlMinutesLeft: 9, lastSyncAt: "12:39" },
   AAPL: { enabled: true, ttlMinutesLeft: 14, lastSyncAt: "12:41" },
+  "005930.KS": { enabled: true, ttlMinutesLeft: 10, lastSyncAt: "12:38" },
+  "000660.KS": { enabled: true, ttlMinutesLeft: 10, lastSyncAt: "12:38" },
+  "005380.KS": { enabled: true, ttlMinutesLeft: 10, lastSyncAt: "12:38" },
 };
 
 type PredictionApiResponse = {

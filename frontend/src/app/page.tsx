@@ -1,11 +1,21 @@
-﻿import Link from "next/link";
+﻿import Image from "next/image";
+import Link from "next/link";
 
 export default function LandingPage() {
   return (
     <main className="min-h-screen bg-[radial-gradient(circle_at_18%_12%,hsl(var(--accent)/0.18),transparent_36%),radial-gradient(circle_at_80%_78%,hsl(var(--secondary)/0.15),transparent_40%),hsl(var(--background))] text-foreground">
       <div className="mx-auto w-full max-w-6xl p-3 sm:p-4 md:p-6">
         <header className="flex items-center justify-between rounded-2xl border-2 border-black bg-card/90 px-4 py-3 shadow-[var(--shadow-comic)] backdrop-blur">
-          <p className="text-sm font-black tracking-wide">AI Stock Predictor</p>
+          <div className="flex items-center gap-3">
+            <p className="text-sm font-black tracking-wide">AI Stock Predictor</p>
+            <Image
+              src="/branding/ant-gravity-wordmark.png"
+              alt="ANT GRAVITY"
+              width={280}
+              height={58}
+              className="h-10 w-auto object-contain object-center"
+            />
+          </div>
           <nav className="flex items-center gap-2">
             <Link
               href="/dashboard"
@@ -83,4 +93,3 @@ export default function LandingPage() {
     </main>
   );
 }
-
