@@ -1,50 +1,92 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+﻿<!--
+동기화 영향 보고서
+- 버전 변경: template-initial -> 1.0.0
+- 수정된 원칙:
+  - 원칙 1 placeholder -> I. 명세 우선 실행
+  - 원칙 2 placeholder -> II. 개인정보 우선 데이터 처리
+  - 원칙 3 placeholder -> III. 네이밍 및 구조 일관성
+  - 원칙 4 placeholder -> IV. 품질 게이트 배포 차단
+  - 원칙 5 placeholder -> V. 작업 이력 추적성
+- 추가된 섹션:
+  - 추가 제약사항
+  - 전달 워크플로우
+- 제거된 섹션: 없음
+- 템플릿 업데이트 현황:
+  - ✅ .specify/templates/plan-template.md
+  - ✅ .specify/templates/spec-template.md
+  - ✅ .specify/templates/tasks-template.md
+  - ⚠ 보류: .specify/templates/commands/*.md (디렉터리 없음)
+  - ✅ README.md
+- 후속 TODO: 없음
+-->
+# Ant Gravity 헌법
 
-## Core Principles
+## 핵심 원칙
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. 명세 우선 실행
+모든 구현은 문서화된 spec과 plan에서 시작해야 한다. 코딩 전에 가정,
+성공 기준, 검증 단계를 반드시 정의해야 한다. 요구사항이 모호하면
+명확화 요청을 하거나 spec에 열린 이슈로 명시해야 한다.
+근거: 묵시적 가정으로 인한 방향 이탈과 재작업을 줄인다.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. 개인정보 우선 데이터 처리
+시스템은 GPS 데이터 또는 그에 준하는 정밀 위치 식별자를 데이터베이스에
+저장하면 안 된다. 민감한 비밀값은 환경 파일에만 두고 버전 관리에
+커밋하면 안 된다. 데이터 수집은 제품 동작에 필요한 최소 범위로 제한해야 한다.
+근거: 법적/보안 리스크를 줄이고 최소 권한 데이터 원칙을 지킨다.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. 네이밍 및 구조 일관성
+프론트엔드 컴포넌트 파일명은 PascalCase를 사용해야 한다
+(예: `UserProfile.tsx`). 변수명은 camelCase를 사용해야 한다
+(예: `userName`). 신규 코드는 기존 프로젝트 구조를 따라야 하며,
+요청 범위 밖 리팩터링은 하지 않는다.
+근거: 일관된 네이밍은 리뷰 속도와 유지보수성을 높인다.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. 품질 게이트 배포 차단
+모든 산출물 변경은 완료로 간주되기 전에 `pnpm lint`와 `pnpm typecheck`를
+반드시 통과해야 한다. 게이트가 실패하면 변경은 미완료 상태이며
+구현 단계로 돌아가야 한다. 예외는 plan에 기록하고 승인을 받아야 한다.
+근거: 기본 품질을 유지하고 회귀를 조기에 차단한다.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. 작업 이력 추적성
+각 개발 단계마다 `docs/개발일지/`에 개발일지, `docs/prompt/`에 프롬프트
+기록을 반드시 남겨야 한다. 각 기록에는 작성시각, 해결하려는 문제,
+해결된 항목, 미해결 항목을 포함해야 한다.
+근거: 감사 가능한 개발 맥락을 남기고 인수인계 비용을 줄인다.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+## 추가 제약사항
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+- 패키지 설치 및 스크립트 실행은 `pnpm`만 사용해야 한다.
+- 개발 서버 실행 명령은 `pnpm run dev`를 사용해야 한다.
+- 코드스타일 검사는 `pnpm run lint` 명령 인터페이스를 사용해야 한다.
+- 변경은 수술식으로 적용하고, 요청과 직접 관련된 줄만 수정해야 한다.
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+## 전달 워크플로우
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+1. 구현 전에 spec/plan 문서를 작성하거나 갱신한다.
+2. 승인된 요구사항을 만족하는 최소 코드로 구현한다.
+3. `pnpm lint`와 `pnpm typecheck`로 검증한다.
+4. 단계별 `docs/개발일지/`, `docs/prompt/`를 갱신한다.
+5. 헌법 준수 여부를 명시해 리뷰를 요청한다.
 
-## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
+## 거버넌스
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+이 헌법은 저장소 내 충돌하는 로컬 관행보다 우선한다.
+개정 시 반드시 아래를 포함해야 한다.
+- 개정 근거와 영향 받는 섹션
+- 시맨틱 버전 영향(MAJOR/MINOR/PATCH)
+- 필요한 템플릿/문서 동기화 변경
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+버전 정책:
+- MAJOR: 원칙 제거 또는 호환되지 않는 재정의
+- MINOR: 새 원칙 추가 또는 거버넌스의 실질 확장
+- PATCH: 규범 변화 없는 문구 명확화
+
+준수 검토 기대사항:
+- 모든 plan에는 Constitution Check가 포함되어야 한다.
+- 모든 spec에는 개인정보/품질게이트 제약이 포함되어야 한다.
+- 모든 tasks에는 품질게이트와 기록 갱신 작업이 포함되어야 한다.
+- 모든 PR은 헌법 요구사항 충족 여부를 명시해야 한다.
+
+**버전**: 1.0.0 | **제정일**: 2026-02-24 | **최종 개정일**: 2026-02-24
+

@@ -1,115 +1,123 @@
-# Feature Specification: [FEATURE NAME]
+﻿# 기능 명세서: [FEATURE NAME]
 
-**Feature Branch**: `[###-feature-name]`  
-**Created**: [DATE]  
-**Status**: Draft  
-**Input**: User description: "$ARGUMENTS"
+**기능 브랜치**: `[###-feature-name]`  
+**작성일**: [DATE]  
+**상태**: 초안  
+**입력**: 사용자 설명: "$ARGUMENTS"
 
-## User Scenarios & Testing *(mandatory)*
+## 사용자 시나리오 및 테스트 *(필수)*
 
 <!--
-  IMPORTANT: User stories should be PRIORITIZED as user journeys ordered by importance.
-  Each user story/journey must be INDEPENDENTLY TESTABLE - meaning if you implement just ONE of them,
-  you should still have a viable MVP (Minimum Viable Product) that delivers value.
-  
-  Assign priorities (P1, P2, P3, etc.) to each story, where P1 is the most critical.
-  Think of each story as a standalone slice of functionality that can be:
-  - Developed independently
-  - Tested independently
-  - Deployed independently
-  - Demonstrated to users independently
+  중요: 사용자 스토리는 중요도 순으로 우선순위화된 사용자 여정이어야 한다.
+  각 스토리/여정은 독립적으로 테스트 가능해야 한다.
+  즉, 하나만 구현해도 가치 있는 MVP가 되어야 한다.
+
+  각 스토리에 우선순위(P1, P2, P3...)를 부여한다. P1이 가장 중요하다.
+  각 스토리는 다음이 가능한 독립 기능 단위여야 한다.
+  - 독립 개발
+  - 독립 테스트
+  - 독립 배포
+  - 독립 데모
 -->
 
-### User Story 1 - [Brief Title] (Priority: P1)
+### 사용자 스토리 1 - [짧은 제목] (우선순위: P1)
 
-[Describe this user journey in plain language]
+[이 사용자 여정을 평이한 문장으로 설명]
 
-**Why this priority**: [Explain the value and why it has this priority level]
+**우선순위 이유**: [이 가치와 우선순위 배정 이유 설명]
 
-**Independent Test**: [Describe how this can be tested independently - e.g., "Can be fully tested by [specific action] and delivers [specific value]"]
+**독립 테스트**: [어떻게 독립 테스트 가능한지 설명 - 예: "[구체 행동]으로 완전 테스트 가능하며 [구체 가치]를 제공"]
 
-**Acceptance Scenarios**:
+**인수 시나리오**:
 
-1. **Given** [initial state], **When** [action], **Then** [expected outcome]
-2. **Given** [initial state], **When** [action], **Then** [expected outcome]
+1. **조건** [초기 상태], **행동** [행동], **결과** [기대 결과]
+2. **조건** [초기 상태], **행동** [행동], **결과** [기대 결과]
 
 ---
 
-### User Story 2 - [Brief Title] (Priority: P2)
+### 사용자 스토리 2 - [짧은 제목] (우선순위: P2)
 
-[Describe this user journey in plain language]
+[이 사용자 여정을 평이한 문장으로 설명]
 
-**Why this priority**: [Explain the value and why it has this priority level]
+**우선순위 이유**: [이 가치와 우선순위 배정 이유 설명]
 
-**Independent Test**: [Describe how this can be tested independently]
+**독립 테스트**: [어떻게 독립 테스트 가능한지 설명]
 
-**Acceptance Scenarios**:
+**인수 시나리오**:
 
-1. **Given** [initial state], **When** [action], **Then** [expected outcome]
-
----
-
-### User Story 3 - [Brief Title] (Priority: P3)
-
-[Describe this user journey in plain language]
-
-**Why this priority**: [Explain the value and why it has this priority level]
-
-**Independent Test**: [Describe how this can be tested independently]
-
-**Acceptance Scenarios**:
-
-1. **Given** [initial state], **When** [action], **Then** [expected outcome]
+1. **조건** [초기 상태], **행동** [행동], **결과** [기대 결과]
 
 ---
 
-[Add more user stories as needed, each with an assigned priority]
+### 사용자 스토리 3 - [짧은 제목] (우선순위: P3)
 
-### Edge Cases
+[이 사용자 여정을 평이한 문장으로 설명]
 
-<!--
-  ACTION REQUIRED: The content in this section represents placeholders.
-  Fill them out with the right edge cases.
--->
+**우선순위 이유**: [이 가치와 우선순위 배정 이유 설명]
 
-- What happens when [boundary condition]?
-- How does system handle [error scenario]?
+**독립 테스트**: [어떻게 독립 테스트 가능한지 설명]
 
-## Requirements *(mandatory)*
+**인수 시나리오**:
 
-<!--
-  ACTION REQUIRED: The content in this section represents placeholders.
-  Fill them out with the right functional requirements.
--->
+1. **조건** [초기 상태], **행동** [행동], **결과** [기대 결과]
 
-### Functional Requirements
+---
 
-- **FR-001**: System MUST [specific capability, e.g., "allow users to create accounts"]
-- **FR-002**: System MUST [specific capability, e.g., "validate email addresses"]  
-- **FR-003**: Users MUST be able to [key interaction, e.g., "reset their password"]
-- **FR-004**: System MUST [data requirement, e.g., "persist user preferences"]
-- **FR-005**: System MUST [behavior, e.g., "log all security events"]
+[필요 시 우선순위를 지정해 사용자 스토리를 추가]
 
-*Example of marking unclear requirements:*
-
-- **FR-006**: System MUST authenticate users via [NEEDS CLARIFICATION: auth method not specified - email/password, SSO, OAuth?]
-- **FR-007**: System MUST retain user data for [NEEDS CLARIFICATION: retention period not specified]
-
-### Key Entities *(include if feature involves data)*
-
-- **[Entity 1]**: [What it represents, key attributes without implementation]
-- **[Entity 2]**: [What it represents, relationships to other entities]
-
-## Success Criteria *(mandatory)*
+### 엣지 케이스
 
 <!--
-  ACTION REQUIRED: Define measurable success criteria.
-  These must be technology-agnostic and measurable.
+  작업 필요: 아래는 placeholder다.
+  실제 경계/오류 케이스로 교체한다.
 -->
 
-### Measurable Outcomes
+- [경계 조건]일 때 어떻게 동작하는가?
+- [오류 시나리오]를 시스템이 어떻게 처리하는가?
 
-- **SC-001**: [Measurable metric, e.g., "Users can complete account creation in under 2 minutes"]
-- **SC-002**: [Measurable metric, e.g., "System handles 1000 concurrent users without degradation"]
-- **SC-003**: [User satisfaction metric, e.g., "90% of users successfully complete primary task on first attempt"]
-- **SC-004**: [Business metric, e.g., "Reduce support tickets related to [X] by 50%"]
+## 요구사항 *(필수)*
+
+<!--
+  작업 필요: 아래는 placeholder다.
+  실제 기능 요구사항으로 교체한다.
+-->
+
+### 기능 요구사항
+
+- **FR-001**: 시스템은 반드시 [구체 기능, 예: "사용자 계정 생성을 허용"]
+- **FR-002**: 시스템은 반드시 [구체 기능, 예: "이메일 형식 검증"]
+- **FR-003**: 사용자는 반드시 [핵심 상호작용, 예: "비밀번호 재설정"]
+- **FR-004**: 시스템은 반드시 [데이터 요구사항, 예: "사용자 환경설정 저장"]
+- **FR-005**: 시스템은 반드시 [행동, 예: "모든 보안 이벤트 기록"]
+
+*불명확 요구사항 표기 예시:*
+
+- **FR-006**: 시스템은 반드시 [확인 필요: 인증 방식 미지정 - email/password, SSO, OAuth?] 방식으로 사용자 인증
+- **FR-007**: 시스템은 반드시 [확인 필요: 보관 기간 미지정] 동안 사용자 데이터 보관
+
+### 핵심 엔터티 *(기능이 데이터를 다룰 때 포함)*
+
+- **[Entity 1]**: [의미와 핵심 속성(구현 세부 제외)]
+- **[Entity 2]**: [의미와 관계 정보]
+
+## 헌법 정합성 *(필수)*
+
+- **CA-001 개인정보**: 이 기능이 GPS 또는 정밀 위치 식별자를 영구 저장소에 저장하지 않음을 확인한다.
+- **CA-002 네이밍**: 산출 코드에서 컴포넌트 파일명은 PascalCase, 변수명은 camelCase를 사용함을 확인한다.
+- **CA-003 품질 게이트**: 이 기능에서 `pnpm lint`와 `pnpm typecheck`를 어떻게 실행할지 정의한다.
+- **CA-004 추적성**: 구현 단계별 `docs/개발일지/`, `docs/prompt/` 갱신 계획을 정의한다.
+
+## 성공 기준 *(필수)*
+
+<!--
+  작업 필요: 측정 가능한 성공 기준을 정의한다.
+  기술 독립적이고 계량 가능해야 한다.
+-->
+
+### 측정 가능한 결과
+
+- **SC-001**: [측정 지표, 예: "사용자가 2분 이내 회원가입 완료"]
+- **SC-002**: [측정 지표, 예: "동시 사용자 1000명 처리 시 성능 저하 없음"]
+- **SC-003**: [사용자 만족 지표, 예: "주요 작업 1차 시도 성공률 90%"]
+- **SC-004**: [비즈니스 지표, 예: "[X] 관련 문의 50% 감소"]
+

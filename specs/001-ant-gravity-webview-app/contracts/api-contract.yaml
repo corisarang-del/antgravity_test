@@ -1,0 +1,92 @@
+﻿openapi: 3.0.3
+info:
+  title: Ant Gravity Webview API Contract
+  version: 0.1.0
+servers:
+  - url: https://api.ant-gravity.local
+paths:
+  /symbols:
+    get:
+      summary: 조회 가능한 종목 목록 반환
+      responses:
+        '200':
+          description: 성공
+  /predictions:
+    get:
+      summary: 종목별 예측 결과 조회
+      parameters:
+        - in: query
+          name: ticker
+          schema: { type: string }
+        - in: query
+          name: horizon
+          schema: { type: string, enum: [D1, D2, D3, D4, D5] }
+      responses:
+        '200': { description: 성공 }
+        '400': { description: 잘못된 요청 }
+  /predictions/history:
+    get:
+      summary: 예측-실제 비교 이력 조회
+      responses:
+        '200': { description: 성공 }
+  /indicators:
+    get:
+      summary: 예측 근거 지표 조회
+      responses:
+        '200': { description: 성공 }
+  /watchlist:
+    get:
+      summary: 로그인 사용자 관심 종목 조회
+      responses:
+        '200': { description: 성공 }
+        '401': { description: 인증 필요 }
+    post:
+      summary: 관심 종목 추가
+      responses:
+        '201': { description: 생성됨 }
+        '401': { description: 인증 필요 }
+    delete:
+      summary: 관심 종목 삭제
+      responses:
+        '204': { description: 삭제됨 }
+        '401': { description: 인증 필요 }
+  /alerts/preferences:
+    get:
+      summary: 알림 설정 조회
+      responses:
+        '200': { description: 성공 }
+        '401': { description: 인증 필요 }
+    put:
+      summary: 알림 설정 저장
+      responses:
+        '200': { description: 저장됨 }
+        '401': { description: 인증 필요 }
+  /notifications:
+    get:
+      summary: 인앱 알림 조회
+      responses:
+        '200': { description: 성공 }
+        '401': { description: 인증 필요 }
+  /notifications/{id}/read:
+    post:
+      summary: 인앱 알림 읽음 처리
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        '200': { description: 읽음 처리 }
+        '401': { description: 인증 필요 }
+components:
+  schemas:
+    Prediction:
+      type: object
+      properties:
+        ticker: { type: string }
+        horizonDate: { type: string, format: date }
+        predictedPrice: { type: number }
+        direction: { type: string, enum: [UP, DOWN, FLAT] }
+        confidenceScore: { type: number }
+        dataStatus: { type: string, enum: [NORMAL, DELAYED, FAILED] }
+        generatedAt: { type: string, format: date-time }
