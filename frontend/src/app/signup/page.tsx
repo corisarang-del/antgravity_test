@@ -11,12 +11,23 @@ function SignupPageContent() {
   const searchParams = useSearchParams();
   const redirectTo = useMemo(() => searchParams.get("redirect") ?? "/watchlist", [searchParams]);
 
-  const { signUpWithPassword, resendSignupConfirmEmail } = useAuth();
+  const { signUpWithPassword, resendSignupConfirmEmail, signInWithKakao } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isKakaoLoading, setIsKakaoLoading] = useState(false);
   const [message, setMessage] = useState<string>("");
+
+  const handleKakaoLogin = async () => {
+    setIsKakaoLoading(true);
+    setMessage("");
+    const result = await signInWithKakao();
+    if (result.errorMessage) {
+      setMessage(`실패: ${result.errorMessage}`);
+      setIsKakaoLoading(false);
+    }
+  };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -116,6 +127,29 @@ function SignupPageContent() {
             <p className="text-[11px] font-semibold text-muted-foreground">
               메일이 안 오면 스팸함 확인 후, Supabase Auth의 Email 설정(SMTP/확인 메일 정책)도 확인해.
             </p>
+
+            <div className="relative flex items-center py-1">
+              <div className="flex-grow border-t-2 border-black/10" />
+              <span className="mx-3 text-xs font-semibold text-muted-foreground">또는</span>
+              <div className="flex-grow border-t-2 border-black/10" />
+            </div>
+
+            <button
+              type="button"
+              onClick={() => void handleKakaoLogin()}
+              disabled={isKakaoLoading || isSubmitting}
+              className="flex h-11 w-full items-center justify-center gap-2 rounded-md border-2 border-black bg-[#FEE500] px-4 text-sm font-extrabold text-[#191919] hover:-translate-y-0.5 disabled:opacity-60"
+            >
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M9 1.5C4.858 1.5 1.5 4.134 1.5 7.38c0 2.07 1.368 3.888 3.438 4.938l-.876 3.276a.225.225 0 0 0 .342.246L8.49 13.5c.168.012.336.018.51.018 4.142 0 7.5-2.634 7.5-5.88S13.142 1.5 9 1.5Z"
+                  fill="#191919"
+                />
+              </svg>
+              {isKakaoLoading ? "처리 중..." : "카카오로 가입/로그인"}
+            </button>
           </form>
 
           {message ? <p className="mt-3 text-xs font-semibold text-muted-foreground">{message}</p> : null}
