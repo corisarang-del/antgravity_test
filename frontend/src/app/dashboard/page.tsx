@@ -490,7 +490,7 @@ export default function DashboardPage() {
             <article className="rounded-lg border-2 border-black bg-card p-3">
               <p className="text-xs font-bold text-muted-foreground">예측 방향</p>
               <p className={`mt-1 text-xl font-black ${directionMeta.accentClass}`}>{dashboardData.summary.direction}</p>
-              <p className="text-xs font-semibold text-muted-foreground">기준 시각 {dashboardData.summary.updatedAt}</p>
+              <p className="text-xs font-semibold text-muted-foreground">기준 시각 {updatedAtLabel}</p>
             </article>
             <article className="rounded-lg border-2 border-black bg-card p-3">
               <div className="flex items-center justify-between gap-2">
