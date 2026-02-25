@@ -42,28 +42,23 @@ export async function resendSignupEmail(email: string): Promise<{ ok: boolean }>
   });
 }
 
-export async function signInWithKakao(): Promise<void> {
+async function signInWithOAuthProvider(provider: "kakao" | "google"): Promise<void> {
   const redirectTo = typeof window !== "undefined"
     ? `${window.location.origin}/auth/callback`
     : "/auth/callback";
 
   const { error } = await supabase.auth.signInWithOAuth({
-    provider: "kakao",
+    provider,
     options: { redirectTo },
   });
 
   if (error) throw new Error(error.message);
 }
 
+export async function signInWithKakao(): Promise<void> {
+  return signInWithOAuthProvider("kakao");
+}
+
 export async function signInWithGoogle(): Promise<void> {
-  const redirectTo = typeof window !== "undefined"
-    ? `${window.location.origin}/auth/callback`
-    : "/auth/callback";
-
-  const { error } = await supabase.auth.signInWithOAuth({
-    provider: "google",
-    options: { redirectTo },
-  });
-
-  if (error) throw new Error(error.message);
+  return signInWithOAuthProvider("google");
 }
