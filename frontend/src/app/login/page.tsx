@@ -119,7 +119,15 @@ function LoginPageContent() {
             </form>
           )}
 
-          {message ? <p className="mt-3 text-xs font-semibold text-muted-foreground">{message}</p> : null}
+          {message ? (
+            <p
+              role="status"
+              aria-live="polite"
+              className={`mt-3 text-xs font-semibold ${message.startsWith("실패") ? "text-[hsl(var(--destructive))]" : "text-[hsl(var(--success))]"}`}
+            >
+              {message}
+            </p>
+          ) : null}
         </section>
       </div>
     </main>

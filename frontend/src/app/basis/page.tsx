@@ -1,12 +1,16 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
+import { Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 
 import { IndicatorCardGrid } from "@/components/IndicatorCardGrid";
 import { useHistoryData } from "@/features/history/useHistoryData";
 
-export default function BasisPage() {
-  const historyData = useHistoryData();
+function BasisPageContent() {
+  const searchParams = useSearchParams();
+  const ticker = searchParams.get("ticker") ?? "TSLA";
+  const historyData = useHistoryData(ticker);
 
   return (
     <main className="min-h-screen bg-background p-3 text-foreground sm:p-4 md:p-6">
@@ -30,3 +34,18 @@ export default function BasisPage() {
   );
 }
 
+export default function BasisPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="min-h-screen bg-background p-3 text-foreground sm:p-4 md:p-6">
+          <div className="mx-auto max-w-5xl rounded-2xl border-2 border-black bg-card p-4 shadow-[var(--shadow-comic)]">
+            <p className="text-sm font-semibold">페이지 준비 중...</p>
+          </div>
+        </main>
+      }
+    >
+      <BasisPageContent />
+    </Suspense>
+  );
+}

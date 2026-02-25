@@ -1,5 +1,8 @@
 ﻿import type { Metadata } from "next";
 import { Geist_Mono, Plus_Jakarta_Sans } from "next/font/google";
+
+import { AuthProvider } from "@/features/auth/AuthProvider";
+
 import "./globals.css";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -27,7 +30,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body className={`${plusJakartaSans.variable} ${geistMono.variable}`}>{children}</body>
+      <body className={`${plusJakartaSans.variable} ${geistMono.variable}`}>
+        <AuthProvider>{children}</AuthProvider>
+      </body>
     </html>
   );
 }
