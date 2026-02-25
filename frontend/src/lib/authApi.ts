@@ -1,3 +1,5 @@
+import { supabase } from "@/lib/supabaseClient";
+
 import { apiClient } from "@/lib/apiClient";
 
 type AuthUser = {
@@ -38,4 +40,17 @@ export async function resendSignupEmail(email: string): Promise<{ ok: boolean }>
     method: "POST",
     body: { email },
   });
+}
+
+export async function signInWithKakao(): Promise<void> {
+  const redirectTo = typeof window !== "undefined"
+    ? `${window.location.origin}/auth/callback`
+    : "/auth/callback";
+
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: "kakao",
+    options: { redirectTo },
+  });
+
+  if (error) throw new Error(error.message);
 }

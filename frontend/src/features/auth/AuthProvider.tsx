@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
-import { loginWithPassword, resendSignupEmail, signupWithPassword } from "@/lib/authApi";
+import { loginWithPassword, resendSignupEmail, signInWithKakao, signupWithPassword } from "@/lib/authApi";
 import {
   clearStoredAuthSession,
   getStoredAuthSession,
@@ -16,6 +16,7 @@ type AuthContextValue = {
   isLoading: boolean;
   isLoggedIn: boolean;
   signInWithPassword: (email: string, password: string) => Promise<{ errorMessage?: string }>;
+  signInWithKakao: () => Promise<{ errorMessage?: string }>;
   signUpWithPassword: (email: string, password: string) => Promise<{ errorMessage?: string; needsEmailConfirm?: boolean }>;
   resendSignupConfirmEmail: (email: string) => Promise<{ errorMessage?: string }>;
   signOut: () => Promise<void>;
@@ -72,6 +73,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           return {};
         } catch (error) {
           return { errorMessage: error instanceof Error ? error.message : "로그인 실패" };
+        }
+      },
+      signInWithKakao: async () => {
+        try {
+          await signInWithKakao();
+          return {};
+        } catch (error) {
+          return { errorMessage: error instanceof Error ? error.message : "카카오 로그인 실패" };
         }
       },
       signUpWithPassword: async (email, password) => {
