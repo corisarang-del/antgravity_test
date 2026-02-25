@@ -21,6 +21,23 @@ from app.api.routes import (
 load_dotenv()
 
 
+def _get_cors_allowed_origins() -> list[str]:
+    default_origins = [
+        "http://127.0.0.1:3000",
+        "http://localhost:3000",
+    ]
+    configured = os.getenv("CORS_ALLOWED_ORIGINS", "").strip()
+    if not configured:
+        return default_origins
+
+    origins: list[str] = []
+    for value in configured.split(","):
+        origin = value.strip().rstrip("/")
+        if origin and origin not in origins:
+            origins.append(origin)
+    return origins or default_origins
+
+
 def _sanitize_proxy_env_for_market_data() -> None:
     disable_proxy = os.getenv("DISABLE_SYSTEM_PROXY_FOR_MARKET_DATA", "true").strip().lower()
     if disable_proxy not in {"1", "true", "yes", "on"}:
@@ -46,10 +63,7 @@ app = FastAPI(title="Ant Gravity API", version="0.1.0")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://127.0.0.1:3000",
-        "http://localhost:3000",
-    ],
+    allow_origins=_get_cors_allowed_origins(),
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
