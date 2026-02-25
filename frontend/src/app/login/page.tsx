@@ -1,22 +1,19 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { Suspense, useMemo, useState } from "react";
 
 import { useAuth } from "@/features/auth/AuthProvider";
 
 function LoginPageContent() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const redirectTo = useMemo(() => searchParams.get("redirect") ?? "/watchlist", [searchParams]);
 
-  const { isLoggedIn, isLoading, signInWithPassword, signInWithKakao, signOut, user } = useAuth();
+  const { isLoggedIn, isLoading, signInWithKakao, signInWithGoogle, signOut, user } = useAuth();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isKakaoLoading, setIsKakaoLoading] = useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [message, setMessage] = useState<string>("");
 
   const handleKakaoLogin = async () => {
@@ -27,24 +24,16 @@ function LoginPageContent() {
       setMessage(`실패: ${result.errorMessage}`);
       setIsKakaoLoading(false);
     }
-    // 성공 시 카카오 페이지로 리다이렉트되므로 로딩 상태 유지
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setIsSubmitting(true);
+  const handleGoogleLogin = async () => {
+    setIsGoogleLoading(true);
     setMessage("");
-
-    const result = await signInWithPassword(email, password);
+    const result = await signInWithGoogle();
     if (result.errorMessage) {
       setMessage(`실패: ${result.errorMessage}`);
-      setIsSubmitting(false);
-      return;
+      setIsGoogleLoading(false);
     }
-
-    setMessage("로그인 성공");
-    setIsSubmitting(false);
-    router.push(redirectTo);
   };
 
   if (isLoading) {
@@ -62,7 +51,7 @@ function LoginPageContent() {
       <div className="mx-auto max-w-md space-y-4">
         <header className="rounded-2xl border-2 border-black bg-[linear-gradient(135deg,hsl(var(--accent)),hsl(var(--brand-pink-soft)))] p-4 shadow-[var(--shadow-comic)]">
           <h1 className="text-2xl font-black">로그인</h1>
-          <p className="mt-1 text-sm font-semibold text-foreground/85">계정으로 로그인해서 개인화 기능을 사용해.</p>
+          <p className="mt-1 text-sm font-semibold text-foreground/85">소셜 계정으로 간편하게 로그인해.</p>
         </header>
 
         <section className="rounded-2xl border-2 border-black bg-card p-4 shadow-[var(--shadow-comic)]">
@@ -86,52 +75,11 @@ function LoginPageContent() {
               </div>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-3">
-              <label className="block text-sm font-semibold" htmlFor="loginEmail">
-                이메일
-                <input
-                  id="loginEmail"
-                  type="email"
-                  required
-                  autoComplete="email"
-                  className="mt-1 h-11 w-full rounded-md border-2 border-black bg-background px-3"
-                  value={email}
-                  onChange={(event) => setEmail(event.target.value)}
-                />
-              </label>
-
-              <label className="block text-sm font-semibold" htmlFor="loginPassword">
-                비밀번호
-                <input
-                  id="loginPassword"
-                  type="password"
-                  required
-                  minLength={6}
-                  autoComplete="current-password"
-                  className="mt-1 h-11 w-full rounded-md border-2 border-black bg-background px-3"
-                  value={password}
-                  onChange={(event) => setPassword(event.target.value)}
-                />
-              </label>
-
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="h-11 w-full rounded-md border-2 border-black bg-[hsl(var(--primary))] px-4 text-sm font-extrabold text-primary-foreground hover:-translate-y-0.5 disabled:opacity-60"
-              >
-                {isSubmitting ? "처리 중..." : "로그인"}
-              </button>
-
-              <div className="relative flex items-center py-1">
-                <div className="flex-grow border-t-2 border-black/10" />
-                <span className="mx-3 text-xs font-semibold text-muted-foreground">또는</span>
-                <div className="flex-grow border-t-2 border-black/10" />
-              </div>
-
+            <div className="space-y-3">
               <button
                 type="button"
                 onClick={() => void handleKakaoLogin()}
-                disabled={isKakaoLoading || isSubmitting}
+                disabled={isKakaoLoading || isGoogleLoading}
                 className="flex h-11 w-full items-center justify-center gap-2 rounded-md border-2 border-black bg-[#FEE500] px-4 text-sm font-extrabold text-[#191919] hover:-translate-y-0.5 disabled:opacity-60"
               >
                 <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
@@ -145,20 +93,28 @@ function LoginPageContent() {
                 {isKakaoLoading ? "처리 중..." : "카카오로 로그인"}
               </button>
 
-              <p className="text-xs font-semibold text-muted-foreground">
-                계정이 없으면 {" "}
-                <Link href={`/signup?redirect=${encodeURIComponent(redirectTo)}`} className="underline">
-                  회원가입
-                </Link>
-              </p>
-            </form>
+              <button
+                type="button"
+                onClick={() => void handleGoogleLogin()}
+                disabled={isKakaoLoading || isGoogleLoading}
+                className="flex h-11 w-full items-center justify-center gap-2 rounded-md border-2 border-black bg-white px-4 text-sm font-extrabold text-[#191919] hover:-translate-y-0.5 disabled:opacity-60"
+              >
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                  <path d="M17.64 9.205c0-.639-.057-1.252-.164-1.841H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615Z" fill="#4285F4"/>
+                  <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18Z" fill="#34A853"/>
+                  <path d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332Z" fill="#FBBC05"/>
+                  <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58Z" fill="#EA4335"/>
+                </svg>
+                {isGoogleLoading ? "처리 중..." : "Google로 로그인"}
+              </button>
+            </div>
           )}
 
           {message ? (
             <p
               role="status"
               aria-live="polite"
-              className={`mt-3 text-xs font-semibold ${message.startsWith("실패") ? "text-[hsl(var(--destructive))]" : "text-[hsl(var(--success))]"}`}
+              className="mt-3 text-xs font-semibold text-[hsl(var(--destructive))]"
             >
               {message}
             </p>

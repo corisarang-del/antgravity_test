@@ -54,3 +54,16 @@ export async function signInWithKakao(): Promise<void> {
 
   if (error) throw new Error(error.message);
 }
+
+export async function signInWithGoogle(): Promise<void> {
+  const redirectTo = typeof window !== "undefined"
+    ? `${window.location.origin}/auth/callback`
+    : "/auth/callback";
+
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: { redirectTo },
+  });
+
+  if (error) throw new Error(error.message);
+}

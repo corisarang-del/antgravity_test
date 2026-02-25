@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
-import { loginWithPassword, resendSignupEmail, signInWithKakao, signupWithPassword } from "@/lib/authApi";
+import { loginWithPassword, resendSignupEmail, signInWithGoogle, signInWithKakao, signupWithPassword } from "@/lib/authApi";
 import {
   clearStoredAuthSession,
   getStoredAuthSession,
@@ -17,6 +17,7 @@ type AuthContextValue = {
   isLoggedIn: boolean;
   signInWithPassword: (email: string, password: string) => Promise<{ errorMessage?: string }>;
   signInWithKakao: () => Promise<{ errorMessage?: string }>;
+  signInWithGoogle: () => Promise<{ errorMessage?: string }>;
   signUpWithPassword: (email: string, password: string) => Promise<{ errorMessage?: string; needsEmailConfirm?: boolean }>;
   resendSignupConfirmEmail: (email: string) => Promise<{ errorMessage?: string }>;
   signOut: () => Promise<void>;
@@ -81,6 +82,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           return {};
         } catch (error) {
           return { errorMessage: error instanceof Error ? error.message : "카카오 로그인 실패" };
+        }
+      },
+      signInWithGoogle: async () => {
+        try {
+          await signInWithGoogle();
+          return {};
+        } catch (error) {
+          return { errorMessage: error instanceof Error ? error.message : "구글 로그인 실패" };
         }
       },
       signUpWithPassword: async (email, password) => {
