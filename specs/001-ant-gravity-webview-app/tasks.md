@@ -15,7 +15,7 @@
 
 ## 경로 규칙
 
-- **웹 앱**: `backend/app/`, `backend/tests/`, `frontend/app/`, `frontend/components/`, `frontend/features/`
+- **웹 앱**: `backend/app/`, `backend/tests/`, `frontend/src/app/`, `frontend/src/components/`, `frontend/src/features/`
 - **DB**: `supabase/migrations/`
 
 ## 1단계: 설정 (공통 인프라)
@@ -23,9 +23,9 @@
 **목적**: 프로젝트 초기 구조와 공통 개발 기준을 정렬한다.
 
 - [x] T001 frontend와 backend 실행 경로 및 스크립트 확인 문서 업데이트 in `specs/001-ant-gravity-webview-app/quickstart.md`
-- [x] T002 [P] 웹뷰 UI 톤앤매너(신뢰+퍼니+친근+깔끔) 디자인 토큰 초안 작성 in `frontend/lib/designTokens.ts`
-- [x] T003 [P] 공통 타입 폴더 및 기본 도메인 타입 파일 생성 in `frontend/features/common/types.ts`
-- [x] T004 [P] API 기본 클라이언트 래퍼 파일 생성 in `frontend/lib/apiClient.ts`
+- [x] T002 [P] 웹뷰 UI 톤앤매너(신뢰+퍼니+친근+깔끔) 디자인 토큰 초안 작성 in `frontend/src/lib/designTokens.ts`
+- [x] T003 [P] 공통 타입 폴더 및 기본 도메인 타입 파일 생성 in `frontend/src/features/common/types.ts`
+- [x] T004 [P] API 기본 클라이언트 래퍼 파일 생성 in `frontend/src/lib/apiClient.ts`
 - [x] T005 환경 변수 키 검증 및 보안 주석 추가 in `backend/.env.example`
 
 ---
@@ -42,8 +42,8 @@
 - [x] T009 [P] 데이터 상태 배지(NORMAL/DELAYED/FAILED) 공통 응답 모델 정의 in `backend/app/models/data_status.py`
 - [x] T010 [P] 사용자 등급별 갱신 정책 판정 서비스 구현 in `backend/app/services/refresh_policy_service.py`
 - [x] T011 인앱 알림 중복 방지 키 규칙 구현 in `backend/app/services/notification_dedup_service.py`
-- [x] T012 프론트 공통 인증/권한 가드 훅 구현 in `frontend/features/common/useAccessGuard.ts`
-- [x] T013 프론트 공통 데이터 상태 배지 컴포넌트 구현 in `frontend/components/DataStatusBadge.tsx`
+- [x] T012 프론트 공통 인증/권한 가드 훅 구현 in `frontend/src/features/common/useAccessGuard.ts`
+- [x] T013 프론트 공통 데이터 상태 배지 컴포넌트 구현 in `frontend/src/components/DataStatusBadge.tsx`
 - [x] T044 [P] 요청 제한(rate limit) 미들웨어 구현 in `backend/app/api/middleware/rate_limit.py`
 - [x] T045 [P] GPS/정밀 위치 입력 차단 검증 로직 구현 in `backend/app/api/middleware/privacy_guard.py`
 - [x] T046 API 로그 민감정보 마스킹 규칙 구현 in `backend/app/services/log_masking_service.py`
@@ -61,14 +61,14 @@
 - [x] T014 [P] [US1] 종목 목록 조회 API 구현 in `backend/app/api/routes/symbols.py`
 - [x] T015 [P] [US1] 대시보드 예측 조회 API 구현 in `backend/app/api/routes/predictions.py`
 - [x] T016 [US1] 예측 조회 서비스에서 일반/유료 갱신 정책 반영 in `backend/app/services/prediction_query_service.py`
-- [x] T017 [P] [US1] 대시보드 탭 페이지 UI 구현 in `frontend/app/(dashboard)/page.tsx`
-- [x] T018 [P] [US1] 종목 선택 드롭다운 컴포넌트 구현 in `frontend/components/SymbolSelector.tsx`
-- [x] T019 [US1] 예측 카드/신뢰도 카드 컴포넌트 구현 in `frontend/components/PredictionSummaryCard.tsx`
-- [x] T020 [US1] 대시보드 데이터 패칭 훅 구현 in `frontend/features/dashboard/useDashboardData.ts`
-- [x] T021 [US1] 대시보드 오류/빈상태/재시도 UX 구현 in `frontend/features/dashboard/dashboardStateView.tsx`
-- [x] T047 [US1] 캐싱 상태/TTL/마지막 갱신 시각 표시 UI 구현 in `frontend/components/CacheStatusPanel.tsx`
-- [x] T048 [US1] 등급별 갱신 정책 안내 UI 구현 in `frontend/components/RefreshPolicyInfo.tsx`
-- [x] T049 [US1] 실시간 갱신 권한 판정 근거 표시 UI 구현 in `frontend/components/RealtimeEligibilityInfo.tsx`
+- [x] T017 [P] [US1] 대시보드 탭 페이지 UI 구현 in `frontend/src/app/page.tsx`
+- [x] T018 [P] [US1] 종목 선택 드롭다운 컴포넌트 구현 in `frontend/src/components/SymbolSelector.tsx`
+- [x] T019 [US1] 예측 카드/신뢰도 카드 컴포넌트 구현 in `frontend/src/components/PredictionSummaryCard.tsx`
+- [x] T020 [US1] 대시보드 데이터 패칭 훅 구현 in `frontend/src/features/dashboard/useDashboardData.ts`
+- [x] T021 [US1] 대시보드 오류/빈상태/재시도 UX 구현 in `frontend/src/features/dashboard/dashboardStateView.tsx`
+- [x] T047 [US1] 캐싱 상태/TTL/마지막 갱신 시각 표시 UI 구현 in `frontend/src/components/CacheStatusPanel.tsx`
+- [x] T048 [US1] 등급별 갱신 정책 안내 UI 구현 in `frontend/src/components/RefreshPolicyInfo.tsx`
+- [x] T049 [US1] 실시간 갱신 권한 판정 근거 표시 UI 구현 in `frontend/src/components/RealtimeEligibilityInfo.tsx`
 
 **체크포인트**: 예측 대시보드 단독 기능 완료.
 
@@ -83,11 +83,11 @@
 - [x] T022 [P] [US2] 지표 스냅샷 조회 API 구현 in `backend/app/api/routes/indicators.py`
 - [x] T023 [P] [US2] 예측 이력 조회 API 구현 in `backend/app/api/routes/prediction_history.py`
 - [x] T024 [US2] 성능 지표 집계 서비스 구현 in `backend/app/services/performance_metrics_service.py`
-- [x] T025 [P] [US2] 근거 탭 UI 구현 in `frontend/app/(dashboard)/basis/page.tsx`
-- [x] T026 [P] [US2] 이력 탭 UI 구현 in `frontend/app/(dashboard)/history/page.tsx`
-- [x] T027 [US2] 지표 카드 컴포넌트 구현 in `frontend/components/IndicatorCardGrid.tsx`
-- [x] T028 [US2] 이력 스파크라인/비교 차트 컴포넌트 구현 in `frontend/components/PredictionHistoryChart.tsx`
-- [x] T029 [US2] 근거/이력 데이터 패칭 훅 구현 in `frontend/features/history/useHistoryData.ts`
+- [x] T025 [P] [US2] 근거 탭 UI 구현 in `frontend/src/app/basis/page.tsx`
+- [x] T026 [P] [US2] 이력 탭 UI 구현 in `frontend/src/app/history/page.tsx`
+- [x] T027 [US2] 지표 카드 컴포넌트 구현 in `frontend/src/components/IndicatorCardGrid.tsx`
+- [x] T028 [US2] 이력 스파크라인/비교 차트 컴포넌트 구현 in `frontend/src/components/PredictionHistoryChart.tsx`
+- [x] T029 [US2] 근거/이력 데이터 패칭 훅 구현 in `frontend/src/features/history/useHistoryData.ts`
 
 **체크포인트**: 근거/이력 단독 기능 완료.
 
@@ -103,12 +103,12 @@
 - [x] T031 [P] [US3] 알림 설정 조회/저장 API 구현 in `backend/app/api/routes/alert_preferences.py`
 - [x] T032 [P] [US3] 인앱 알림 조회/읽음처리 API 구현 in `backend/app/api/routes/notifications.py`
 - [x] T033 [US3] 배치 알림 생성 워커 구현 in `backend/app/workers/daily_alert_dispatcher.py`
-- [x] T034 [US3] 로그인 필수 관심종목 화면 구현 in `frontend/app/(dashboard)/watchlist/page.tsx`
-- [x] T035 [US3] 알림 설정 폼 컴포넌트 구현 in `frontend/components/AlertPreferenceForm.tsx`
-- [x] T036 [US3] 인앱 알림함 UI 및 읽음 처리 구현 in `frontend/components/AppNotificationPanel.tsx`
-- [x] T037 [US3] 비로그인 접근 시 로그인 유도 모달 구현 in `frontend/components/LoginRequiredModal.tsx`
+- [x] T034 [US3] 로그인 필수 관심종목 화면 구현 in `frontend/src/app/watchlist/page.tsx`
+- [x] T035 [US3] 알림 설정 폼 컴포넌트 구현 in `frontend/src/components/AlertPreferenceForm.tsx`
+- [x] T036 [US3] 인앱 알림함 UI 및 읽음 처리 구현 in `frontend/src/components/AppNotificationPanel.tsx`
+- [x] T037 [US3] 비로그인 접근 시 로그인 유도 모달 구현 in `frontend/src/components/LoginRequiredModal.tsx`
 - [x] T050 [US3] 관심 종목/알림 설정 동시 수정 충돌 감지 로직 구현 in `backend/app/services/preference_conflict_service.py`
-- [x] T051 [US3] 충돌 발생 시 재확인 UX 구현 in `frontend/components/PreferenceConflictDialog.tsx`
+- [x] T051 [US3] 충돌 발생 시 재확인 UX 구현 in `frontend/src/components/PreferenceConflictDialog.tsx`
 - [x] T052 [US3] 인앱 알림 읽음 상태 전이 검증 구현 in `backend/tests/integration/test_notification_read_transition.py`
 
 **체크포인트**: 개인화 기능 단독 완료.
@@ -120,7 +120,7 @@
 **목적**: 전 스토리 품질 정리, 문서 정합성, 릴리즈 준비.
 
 - [x] T038 [P] README와 quickstart 실행 절차 동기화 업데이트 in `README.md`
-- [x] T039 디자인 일관성 정리(색/타이포/컴포넌트 변형) in `frontend/app/globals.css`
+- [x] T039 디자인 일관성 정리(색/타이포/컴포넌트 변형) in `frontend/src/app/globals.css`
 - [x] T040 API 계약 대비 구현 누락 점검 리포트 작성 in `specs/001-ant-gravity-webview-app/contracts/contract-gap-report.md`
 - [x] T041 품질 게이트 실행(`pnpm lint`, `pnpm typecheck`) 결과 정리 in `specs/001-ant-gravity-webview-app/quickstart.md`
 - [x] T042 단계별 개발일지 기록 추가 in `docs/개발일지/001-ant-gravity-webview-app.md`
@@ -157,24 +157,24 @@
 
 ```bash
 작업: "T014 [US1] backend/app/api/routes/symbols.py 종목 목록 API 구현"
-작업: "T017 [US1] frontend/app/(dashboard)/page.tsx 대시보드 탭 UI 구현"
-작업: "T018 [US1] frontend/components/SymbolSelector.tsx 종목 선택 컴포넌트 구현"
+작업: "T017 [US1] frontend/src/app/page.tsx 대시보드 탭 UI 구현"
+작업: "T018 [US1] frontend/src/components/SymbolSelector.tsx 종목 선택 컴포넌트 구현"
 ```
 
 ## 병렬 실행 예시: 사용자 스토리 2
 
 ```bash
 작업: "T022 [US2] backend/app/api/routes/indicators.py 지표 조회 API 구현"
-작업: "T025 [US2] frontend/app/(dashboard)/basis/page.tsx 근거 탭 UI 구현"
-작업: "T026 [US2] frontend/app/(dashboard)/history/page.tsx 이력 탭 UI 구현"
+작업: "T025 [US2] frontend/src/app/basis/page.tsx 근거 탭 UI 구현"
+작업: "T026 [US2] frontend/src/app/history/page.tsx 이력 탭 UI 구현"
 ```
 
 ## 병렬 실행 예시: 사용자 스토리 3
 
 ```bash
 작업: "T030 [US3] backend/app/api/routes/watchlist.py 관심종목 API 구현"
-작업: "T034 [US3] frontend/app/(dashboard)/watchlist/page.tsx 관심종목 화면 구현"
-작업: "T036 [US3] frontend/components/AppNotificationPanel.tsx 인앱 알림함 구현"
+작업: "T034 [US3] frontend/src/app/watchlist/page.tsx 관심종목 화면 구현"
+작업: "T036 [US3] frontend/src/components/AppNotificationPanel.tsx 인앱 알림함 구현"
 ```
 
 ---

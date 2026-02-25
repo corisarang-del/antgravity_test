@@ -39,7 +39,7 @@ pnpm run dev
 - 프론트엔드 앱 라우트: `frontend/src/app/`
 - 대시보드 메인 화면: `frontend/src/app/page.tsx`
 - 디자인 시스템 프리뷰: `frontend/src/app/design-system/page.tsx`
-- 디자인 토큰 소스: `design-system/tokens/shadcn-webview-tokens.css`
+- 디자인 토큰 소스: `frontend/src/lib/designTokens.ts` (또는 shadcn 설정 참고)
 
 ## 6) 핵심 플로우 검증
 1. 비로그인 상태로 대시보드/근거/이력 조회
