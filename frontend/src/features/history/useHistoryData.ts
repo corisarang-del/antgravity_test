@@ -45,12 +45,12 @@ const fallbackPayload: HistoryPayload = {
   },
 };
 
-async function fetchHistoryData(): Promise<HistoryPayload> {
+async function fetchHistoryData(ticker: string): Promise<HistoryPayload> {
   try {
     const [indicatorRes, historyRes] = await Promise.all([
-      apiClient<{ snapshot: Record<string, number> }>("/api/indicators/TSLA"),
+      apiClient<{ snapshot: Record<string, number> }>(`/api/indicators/${ticker}`),
       apiClient<{ points: HistoryPoint[]; metrics: { da: number; mape: number; rmse: number } }>(
-        "/api/prediction-history/TSLA",
+        `/api/prediction-history/${ticker}`,
       ),
     ]);
 
@@ -77,11 +77,12 @@ async function fetchHistoryData(): Promise<HistoryPayload> {
   }
 }
 
-export function useHistoryData() {
-  const { data } = useSWR("/api/history-combined", fetchHistoryData, {
-    revalidateOnFocus: false,
-    dedupingInterval: 5000,
-  });
+export function useHistoryData(ticker: string) {
+  const { data } = useSWR(
+    ["/api/history-combined", ticker],
+    ([, t]) => fetchHistoryData(t),
+    { revalidateOnFocus: false, dedupingInterval: 5000 },
+  );
 
   return data ?? fallbackPayload;
 }

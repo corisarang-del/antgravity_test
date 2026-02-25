@@ -1,4 +1,4 @@
-﻿import { useMemo, useState } from "react";
+﻿import { useCallback, useMemo, useState } from "react";
 import useSWR from "swr";
 
 import { apiClient } from "@/lib/apiClient";
@@ -116,9 +116,9 @@ export function useDashboardData() {
 
   const errorType: "none" | "network" | "permission" | "data-delay" = error ? "network" : "none";
 
-  const retry = () => {
+  const retry = useCallback(() => {
     void mutate();
-  };
+  }, [mutate]);
 
   return {
     symbols,

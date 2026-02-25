@@ -36,6 +36,8 @@ const evidenceItemLabels: Record<EvidenceTab, readonly string[]> = {
   external: ["VIX"],
 };
 
+const HHMM_PATTERN = /(\d{1,2}):(\d{2})/;
+
 const rangePresets = ["1D", "1W", "1M", "3M"] as const;
 type RangePreset = (typeof rangePresets)[number];
 
@@ -80,7 +82,7 @@ function toSimpleTimeLabel(value: string): string {
     return `${String(parsed.getHours()).padStart(2, "0")}:${String(parsed.getMinutes()).padStart(2, "0")}`;
   }
 
-  const hhmmMatch = value.match(/(\d{1,2}):(\d{2})/);
+  const hhmmMatch = value.match(HHMM_PATTERN);
   if (hhmmMatch) {
     const hour = hhmmMatch[1].padStart(2, "0");
     const minute = hhmmMatch[2];
@@ -275,11 +277,15 @@ export default function DashboardPage() {
     { revalidateOnFocus: false, dedupingInterval: 5000 },
   );
 
-  const handleSignOut = async () => {
+  const handleRetryPath = useCallback(() => {
+    void mutatePath();
+  }, [mutatePath]);
+
+  const handleSignOut = useCallback(async () => {
     setIsSignOutLoading(true);
     await signOut();
     setIsSignOutLoading(false);
-  };
+  }, [signOut]);
 
   const directionMeta = useMemo<DirectionMeta>(() => {
     if (dashboardData.summary.direction === "상승") {
@@ -310,15 +316,20 @@ export default function DashboardPage() {
   }, [dashboardData.summary.direction]);
 
   const currentPrice = pathData?.features.close;
-  const tickerName = useMemo(
-    () => dashboardData.symbols.find((item) => item.ticker === dashboardData.selectedTicker)?.name ?? dashboardData.selectedTicker,
-    [dashboardData.selectedTicker, dashboardData.symbols],
+  const symbolMap = useMemo(
+    () => new Map(dashboardData.symbols.map((s) => [s.ticker, s.name])),
+    [dashboardData.symbols],
   );
+  const tickerName = symbolMap.get(dashboardData.selectedTicker) ?? dashboardData.selectedTicker;
 
   const filteredSymbols = useMemo(() => {
     const keyword = searchKeyword.trim().toLowerCase();
     if (!keyword) return dashboardData.symbols;
-    const nextSymbols = dashboardData.symbols.filter((item) => item.ticker.toLowerCase().includes(keyword) || item.name.toLowerCase().includes(keyword));
+    const nextSymbols = dashboardData.symbols.filter((item) => {
+      const t = item.ticker.toLowerCase();
+      const n = item.name.toLowerCase();
+      return t.includes(keyword) || n.includes(keyword);
+    });
     return nextSymbols.length > 0 ? nextSymbols : dashboardData.symbols;
   }, [searchKeyword, dashboardData.symbols]);
 
@@ -423,6 +434,7 @@ export default function DashboardPage() {
                 value={searchKeyword}
                 onChange={(event) => setSearchKeyword(event.target.value)}
                 placeholder="예: NVDA, TSLA"
+                autoComplete="off"
                 className={`h-full w-full bg-transparent text-sm font-semibold outline-none ${focusRingClass}`}
                 aria-label="종목 검색"
               />
@@ -459,8 +471,8 @@ export default function DashboardPage() {
 
           <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
             <Link href="/dashboard" className={`inline-flex h-11 cursor-pointer items-center justify-center rounded-md border-2 border-black bg-[hsl(var(--primary)/0.2)] px-3 text-xs font-extrabold hover:-translate-y-0.5 ${focusRingClass}`}>경로 리포트</Link>
-            <Link href="/basis" className={`inline-flex h-11 cursor-pointer items-center justify-center rounded-md border-2 border-black bg-card px-3 text-xs font-extrabold hover:-translate-y-0.5 ${focusRingClass}`}>정밀 근거</Link>
-            <Link href="/history" className={`inline-flex h-11 cursor-pointer items-center justify-center rounded-md border-2 border-black bg-card px-3 text-xs font-extrabold hover:-translate-y-0.5 ${focusRingClass}`}>행동 보고</Link>
+            <Link href={`/basis?ticker=${dashboardData.selectedTicker}`} className={`inline-flex h-11 cursor-pointer items-center justify-center rounded-md border-2 border-black bg-card px-3 text-xs font-extrabold hover:-translate-y-0.5 ${focusRingClass}`}>정밀 근거</Link>
+            <Link href={`/history?ticker=${dashboardData.selectedTicker}`} className={`inline-flex h-11 cursor-pointer items-center justify-center rounded-md border-2 border-black bg-card px-3 text-xs font-extrabold hover:-translate-y-0.5 ${focusRingClass}`}>행동 보고</Link>
             <Link href="/watchlist" className={`inline-flex h-11 cursor-pointer items-center justify-center rounded-md border-2 border-black bg-card px-3 text-xs font-extrabold hover:-translate-y-0.5 ${focusRingClass}`}>수집 기록</Link>
           </div>
 
@@ -506,9 +518,7 @@ export default function DashboardPage() {
             dataSource={pathData?.source ?? "fallback"}
             isPathLoading={isPathLoading}
             hasPathError={Boolean(pathError)}
-            onRetryPath={() => {
-              void mutatePath();
-            }}
+            onRetryPath={handleRetryPath}
           />
 
           <article className="mt-3 rounded-xl border-2 border-black bg-card p-4 shadow-[var(--shadow-comic)]">
