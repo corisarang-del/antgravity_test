@@ -1,3 +1,5 @@
+import { getStoredAuthSession } from "@/lib/authSession";
+
 type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";
 
 type RequestOptions = {
@@ -16,17 +18,10 @@ function toApiUrl(path: string): string {
 export async function apiClient<T>(path: string, options: RequestOptions = {}): Promise<T> {
   const headers: Record<string, string> = { "Content-Type": "application/json" };
 
-  if (typeof window !== "undefined") {
-    const raw = window.localStorage.getItem("ant_auth_session_v1");
-    if (raw) {
-      try {
-        const parsed = JSON.parse(raw) as { accessToken?: string; user?: { id?: string } };
-        if (parsed.user?.id) headers["x-user-id"] = parsed.user.id;
-        if (parsed.accessToken) headers.Authorization = `Bearer ${parsed.accessToken}`;
-      } catch {
-        // ignore parse error and continue with unauthenticated request
-      }
-    }
+  const stored = getStoredAuthSession();
+  if (stored) {
+    headers["x-user-id"] = stored.user.id;
+    headers.Authorization = `Bearer ${stored.accessToken}`;
   }
 
   const response = await fetch(toApiUrl(path), {
